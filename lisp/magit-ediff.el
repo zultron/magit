@@ -505,6 +505,104 @@ stash that were staged."
 (defun magit-ediff-restore-previous-winconf ()
   (set-window-configuration magit-ediff-previous-winconf))
 
+;;; Multi
+
+(defun magit-ediff-compare-n (revA revB)
+  (let* ((action  'magit-ediff-compare)
+         (jobname 'some-job)
+         (spec    (magit-ediff-compare-n-spec revA revB))
+         (buffer
+          (ediff-prepare-meta-buffer
+           'magit-ediff--multi-action
+           (car spec)
+           "*Ediff Session Group Panel"
+           'magit-ediff--redraw-group-buffer
+           jobname
+           (cons (lambda ()
+	           (setq ediff-session-action-function action)
+	           (setq ediff-dir-difference-list (cdr spec)))
+                 nil))))
+    (ediff-show-meta-buffer buffer)))
+
+(defun magit-ediff-compare-n-spec (revA revB &optional revC)
+  `((("" ,revA ,revB ,revC nil string=)
+     ,@(mapcar (lambda (file) ;(fileA fileB &optional fileC)
+                 `(nil nil
+                       (,file nil)
+                       (,file nil)
+                       (nil   nil)))
+               (magit-git-lines "diff" "--name-only" revA (concat "^" revB))))
+    ("" ,revA ,revB ,revC nil string=)))
+
+(defun magit-ediff--multi-action ()
+  "Execute appropriate action for a selected session."
+  (interactive)
+  (let* ((pos            (ediff-event-point last-command-event))
+	 (meta-buf       (ediff-event-buffer last-command-event))
+	 (info           (ediff-get-meta-info meta-buf pos))
+	 (session-buf    (ediff-get-session-buffer info))
+	 (session-number (ediff-get-session-number-at-pos pos meta-buf))
+         (file1 (ediff-get-session-objA-name info))
+         (file2 (ediff-get-session-objB-name info))
+         (file3 (ediff-get-session-objC-name info)))
+    (when (memq (ediff-get-session-status info) '(?I))
+      (ediff-set-session-status info nil)
+      (ediff-update-meta-buffer meta-buf nil session-number))
+    (ediff-with-current-buffer meta-buf
+      (goto-char pos)
+      (cond
+       ((ediff-buffer-live-p session-buf)
+	(ediff-with-current-buffer session-buf
+	  (setq ediff-mouse-pixel-position (mouse-pixel-position))
+	  (ediff-recenter 'no-rehighlight)))
+       ((not (ediff-metajob3))
+	(funcall ediff-session-action-function file1 file2
+                 `(list TODO)))
+       ((ediff-metajob3)
+	(funcall ediff-session-action-function file1 file2 file3
+                 `(list TODO)))
+       ))))
+
+(defun magit-ediff--redraw-group-buffer (meta-list)
+  (ediff-with-current-buffer (ediff-get-group-buffer meta-list)
+    (let ((sessions (cdr meta-list))
+          (inhibit-read-only t)
+          (pos (point)))
+      (erase-buffer)
+      (mapc #'delete-overlay (overlays-in 1 1))
+      (magit-ediff--insert-help-in-meta-buffer)
+      (ediff-insert-dirs-in-meta-buffer meta-list)
+      (if (--any-p (not (eq (ediff-get-session-status it) ?I)) sessions)
+          (let ((n 0))
+            (dolist (session sessions)
+              (cl-incf n)
+	      (unless (eq (ediff-get-session-status session) ?I)
+	        (ediff-insert-session-info-in-meta-buffer session n))))
+      	(insert "This session group has no members\n"))
+      (set-buffer-modified-p nil)
+      (goto-char pos))
+    (current-buffer)))
+
+(defun magit-ediff--insert-help-in-meta-buffer ()
+  (if (not ediff-verbose-help-enabled)
+      (insert (format ediff-meta-buffer-brief-message
+		      (ediff-abbrev-jobname ediff-metajob-name)))
+    (insert (format ediff-meta-buffer-verbose-message
+		    (ediff-abbrev-jobname ediff-metajob-name)))
+    (cond
+     ((ediff-collect-diffs-metajob)
+      (insert "     P:\tcollect custom diffs of all marked sessions\n"))
+     ((ediff-patch-metajob)
+      (insert "     P:\tshow patch appropriately for the context (session or group)\n")))
+    (insert "     ^:\tshow parent session group\n")
+    (or (ediff-one-filegroup-metajob)
+	(insert
+	 "     D:\tshow differences among directories\n"
+	 "    ==:\tfor each session, show which files are identical\n"
+	 "    =h:\tlike ==, but also marks sessions for hiding\n"
+	 "    =m:\tlike ==, but also marks sessions for operation\n\n")))
+  (insert "\n"))
+
 ;;; _
 (provide 'magit-ediff)
 ;;; magit-ediff.el ends here
