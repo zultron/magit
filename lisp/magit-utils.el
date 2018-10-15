@@ -44,6 +44,9 @@
 (eval-when-compile
   (require 'subr-x))
 
+(require 'magit-popup)
+(require 'transient)
+
 (require 'crm)
 
 (eval-when-compile (require 'ido))
