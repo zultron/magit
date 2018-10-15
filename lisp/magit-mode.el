@@ -450,7 +450,7 @@ starts complicating other things, then it will be removed."
     (define-key map "z" 'magit-stash-popup)
     (define-key map "Z" 'magit-stash-popup)
     (define-key map ":" 'magit-git-command)
-    (define-key map "!" 'magit-run-popup)
+    (define-key map "!" 'magit-run)
     (define-key map (kbd "C-c C-b") 'magit-browse-thing)
     (define-key map (kbd "C-c C-c") 'magit-dispatch-popup)
     (define-key map (kbd "C-c C-e") 'magit-dispatch-popup)
