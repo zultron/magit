@@ -724,7 +724,7 @@ and `:slant'."
 
 (defun magit-diff-arguments (&optional refresh)
   (cond ((memq magit-current-popup '(magit-diff-popup magit-diff-refresh-popup))
-         (magit-popup-export-file-args magit-current-popup-args))
+         (magit--export-file-args magit-current-popup-args))
         ((and refresh (not (derived-mode-p 'magit-diff-mode)))
          (list magit-diff-section-arguments
                magit-diff-section-file-args))
@@ -741,7 +741,7 @@ and `:slant'."
          ;; we should get the current values.  However it is much
          ;; more likely that we will end up updating the diff buffer,
          ;; and we therefore use the value from that buffer.
-         (apply #'magit-popup-import-file-args (magit-diff-get-buffer-args))))
+         (apply #'magit--import-file-args (magit-diff-get-buffer-args))))
     (magit-invoke-popup 'magit-diff-popup nil arg)))
 
 ;;;###autoload
@@ -754,7 +754,7 @@ buffer."
   (interactive)
   (if-let ((file (magit-file-relative-name)))
       (let ((magit-diff-arguments
-             (magit-popup-import-file-args
+             (magit--import-file-args
               (if-let ((buffer (magit-mode-get-buffer 'magit-diff-mode)))
                   (with-current-buffer buffer
                     (nth 3 magit-refresh-args))
@@ -773,10 +773,10 @@ buffer."
            (_                    magit-diff-refresh-popup)))
         (magit-diff-arguments
          (if (derived-mode-p 'magit-diff-mode)
-             (magit-popup-import-file-args (nth 2 magit-refresh-args)
-                                           (nth 3 magit-refresh-args))
-           (magit-popup-import-file-args magit-diff-section-arguments
-                                         magit-diff-section-file-args))))
+             (magit--import-file-args (nth 2 magit-refresh-args)
+                                      (nth 3 magit-refresh-args))
+           (magit--import-file-args magit-diff-section-arguments
+                                    magit-diff-section-file-args))))
     (magit-invoke-popup 'magit-diff-refresh-popup nil arg)))
 
 (defun magit-diff-select-algorithm (&rest _ignore)

@@ -45,7 +45,7 @@
   (require 'subr-x))
 
 (require 'magit-popup)
-(require 'transient)
+(require 'magit-transient)
 
 (require 'crm)
 
