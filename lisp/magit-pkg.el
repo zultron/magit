@@ -5,5 +5,6 @@
     (dash "20180413")
     (ghub "20180417")
     (git-commit "20180602")
-    (magit-popup "20180509")
+    (lv "")
+    (transient "")
     (with-editor "20180414")))

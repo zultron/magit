@@ -103,7 +103,6 @@ DASH_VERSION        = 2.14.1
 GHUB_VERSION        = 2.0.1
 GIT_COMMIT_VERSION  = 2.13.0
 LV_VERSION          = 0
-MAGIT_POPUP_VERSION = 2.12.3
 TRANSIENT_VERSION   = 0
 WITH_EDITOR_VERSION = 2.7.3
 
@@ -112,7 +111,6 @@ DASH_MELPA_SNAPSHOT        = 20180413
 GHUB_MELPA_SNAPSHOT        = 20180417
 GIT_COMMIT_MELPA_SNAPSHOT  = 20180602
 LV_MELPA_SNAPSHOT          = 0
-MAGIT_POPUP_MELPA_SNAPSHOT = 20180509
 TRANSIENT_MELPA_SNAPSHOT   = 0
 WITH_EDITOR_MELPA_SNAPSHOT = 20181026
 
@@ -158,13 +156,6 @@ ifeq "$(LV_DIR)" ""
   LV_DIR = $(TOP)../hydra
 endif
 
-MAGIT_POPUP_DIR ?= $(shell \
-  find -L $(ELPA_DIR) -maxdepth 1 -regex '.*/magit-popup-[.0-9]*' 2> /dev/null | \
-  sort | tail -n 1)
-ifeq "$(MAGIT_POPUP_DIR)" ""
-  MAGIT_POPUP_DIR = $(TOP)../magit-popup
-endif
-
 TRANSIENT_DIR ?= $(shell \
   find -L $(ELPA_DIR) -maxdepth 1 -regex '.*/transient-[.0-9]*' 2> /dev/null | \
   sort | tail -n 1)
@@ -202,7 +193,6 @@ ifdef CYGPATH
   LOAD_PATH += -L $(shell cygpath --mixed $(GHUB_DIR))
   LOAD_PATH += -L $(shell cygpath --mixed $(GRAPHQL_DIR))
   LOAD_PATH += -L $(shell cygpath --mixed $(LV_DIR))
-  LOAD_PATH += -L $(shell cygpath --mixed $(MAGIT_POPUP_DIR))
   LOAD_PATH += -L $(shell cygpath --mixed $(TRANSIENT_DIR))
   LOAD_PATH += -L $(shell cygpath --mixed $(TREEPY_DIR))
   LOAD_PATH += -L $(shell cygpath --mixed $(WITH_EDITOR_DIR))
@@ -211,7 +201,6 @@ else
   LOAD_PATH += -L $(GHUB_DIR)
   LOAD_PATH += -L $(GRAPHQL_DIR)
   LOAD_PATH += -L $(LV_DIR)
-  LOAD_PATH += -L $(MAGIT_POPUP_DIR)
   LOAD_PATH += -L $(TRANSIENT_DIR)
   LOAD_PATH += -L $(TREEPY_DIR)
   LOAD_PATH += -L $(WITH_EDITOR_DIR)
