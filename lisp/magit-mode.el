@@ -1385,7 +1385,8 @@ repository's Magit buffers."
                      :key #'car :test #'equal)))
   (dolist (buffer (magit-mode-get-buffers))
     (with-current-buffer buffer
-      (setq magit-section-visibility-cache nil))))
+      (setq magit-section-visibility-cache nil)))
+  (setq magit--libgit-available-p eieio-unbound))
 
 ;;; Utilities
 
