@@ -29,6 +29,9 @@
 
 (require 'magit)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;; Popup
 
 ;;;###autoload (autoload 'magit-notes-popup "magit" nil t)

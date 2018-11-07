@@ -29,6 +29,9 @@
 
 (require 'magit)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;; Commands
 
 ;;;###autoload (autoload 'magit-worktree-popup "magit-worktree" nil t)

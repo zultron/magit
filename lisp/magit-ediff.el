@@ -32,6 +32,9 @@
 (require 'ediff)
 (require 'smerge-mode)
 
+(eval-when-compile
+  (require 'subr-x))
+
 (defvar smerge-ediff-buf)
 (defvar smerge-ediff-windows)
 

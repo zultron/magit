@@ -77,7 +77,9 @@
      (fboundp 'async-bytecomp-package-mode)
      (async-bytecomp-package-mode 1))
 
-(eval-when-compile (require 'recentf))
+(eval-when-compile
+  (require 'recentf)
+  (require 'subr-x))
 
 ;;; Options
 ;;;; Variables

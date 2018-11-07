@@ -29,6 +29,9 @@
 
 (require 'magit)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;;###autoload (autoload 'magit-tag-popup "magit" nil t)
 (magit-define-popup magit-tag-popup
   "Popup console for tag commands."

@@ -30,6 +30,9 @@
 
 (require 'autorevert)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;; Options
 
 (defgroup magit-auto-revert nil

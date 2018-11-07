@@ -29,6 +29,9 @@
 
 (require 'magit)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;; Options
 
 (defcustom magit-fetch-modules-jobs 4

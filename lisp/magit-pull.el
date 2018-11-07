@@ -29,6 +29,9 @@
 
 (require 'magit)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;; Commands
 
 ;;;###autoload (autoload 'magit-pull-popup "magit-pull" nil t)

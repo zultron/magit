@@ -29,6 +29,9 @@
 
 (require 'magit)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;;###autoload (autoload 'magit-reset-popup "magit" nil t)
 (magit-define-popup magit-reset-popup
   "Popup console for reset commands."

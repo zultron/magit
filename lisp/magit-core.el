@@ -38,6 +38,9 @@
 (require 'magit-process)
 (require 'magit-autorevert)
 
+(eval-when-compile
+  (require 'subr-x))
+
 (defgroup magit nil
   "Controlling Git from Emacs."
   :link '(url-link "https://magit.vc")

@@ -25,6 +25,9 @@
 
 (require 'magit)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;; Popup
 
 ;;;###autoload (autoload 'magit-subtree-popup "magit-subtree" nil t)

@@ -37,6 +37,9 @@
 (require 'magit)
 (require 'ghub)
 
+(eval-when-compile
+  (require 'subr-x))
+
 ;;; Variables
 
 (defvar magit-github-token-scopes '(repo)
